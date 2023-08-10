@@ -1,17 +1,24 @@
 import createUrl from '@/constance/create-url'
 import { Article, Data } from '@/types/data'
-import {
-  currentYear,
-  formattedMonth,
-  formattedPreviousDay,
-} from '@/utils/format-dates'
 
-async function requestArticles(language: string) {
+interface RequestArticlesProps {
+  language: string
+  day: string
+  month: string
+  year: number
+}
+
+export default async function requestArticles({
+  language,
+  day,
+  month,
+  year,
+}: RequestArticlesProps) {
   const url = createUrl({
-    currentYear,
-    formattedMonth,
-    formattedPreviousDay,
     language,
+    year,
+    month,
+    day,
   })
   const data = await fetch(url)
   const res: Data = await data.json()
@@ -19,5 +26,3 @@ async function requestArticles(language: string) {
 
   return articles
 }
-
-export default requestArticles

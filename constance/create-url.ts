@@ -1,17 +1,14 @@
 interface BaseUrlProps {
-  currentYear: number
-  formattedMonth: string
-  formattedPreviousDay: string
   language: string
+  year: number
+  month: string
+  day: string
 }
 
-function createUrl({
-  currentYear,
-  formattedMonth,
-  formattedPreviousDay,
-  language,
-}: BaseUrlProps) {
-  return `https://wikimedia.org/api/rest_v1/metrics/pageviews/top/${language}.wikipedia.org/all-access/${currentYear}/${formattedMonth}/${formattedPreviousDay}`
+function createUrl({ year, month, day, language }: BaseUrlProps) {
+  const url = `https://wikimedia.org/api/rest_v1/metrics/pageviews/top/${language}.wikipedia.org/all-access/${year}/${month}/${day}`
+
+  return url
 }
 
 export default createUrl
