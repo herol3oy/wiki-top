@@ -1,5 +1,5 @@
 {
-  "name": "wiki-top-polska",
+  "name": "wiki-top",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -25,6 +25,7 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.4",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",

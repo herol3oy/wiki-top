@@ -26,7 +26,7 @@ export default function RootLayout({
             <small>🔥 Rank</small>
             <small>👁️ Views</small>
           </section>
-          <h1>Polska Wiki Top</h1>
+          <Link href="/">Polska Wiki Top</Link>
           <Link
             className="flex w-fit cursor-pointer gap-3 rounded-md border border-black bg-black fill-white p-2 text-white transition-all duration-300 hover:bg-white hover:fill-black hover:text-black"
             href="https://github.com/herol3oy/kartly"
