@@ -1,6 +1,10 @@
 import './globals.css'
+
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import Link from 'next/link'
+
+import GithubIcon from '@/components/icons/GithubIcon'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,7 +20,24 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`container mx-auto ${inter.className}`}>
+        <nav className="my-10 flex items-center justify-between text-center">
+          <section className="flex gap-2">
+            <small>🔥 Rank</small>
+            <small>👁️ Views</small>
+          </section>
+          <h1>Polska Wiki Top</h1>
+          <Link
+            className="flex w-fit cursor-pointer gap-3 rounded-md border border-black bg-black fill-white p-2 text-white transition-all duration-300 hover:bg-white hover:fill-black hover:text-black"
+            href="https://github.com/herol3oy/kartly"
+            target="_blank"
+          >
+            <GithubIcon />
+            <h6>Github</h6>
+          </Link>
+        </nav>
+        {children}
+      </body>
     </html>
   )
 }
