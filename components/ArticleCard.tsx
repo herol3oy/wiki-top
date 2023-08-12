@@ -1,17 +1,17 @@
 import Link from 'next/link'
 
-import { Article } from '@/types/data'
+import { Article } from '@/types/article'
 
 interface ArticleCardProps {
   article: Article
-  lang: string
+  language: string
 }
 
-function ArticleCard({ article, lang }: ArticleCardProps) {
+export default function ArticleCard({ article, language }: ArticleCardProps) {
   return (
     <Link
       className="border border-slate-900 p-5 text-slate-500 transition hover:-translate-y-1 hover:bg-slate-900 hover:text-purple-200 hover:shadow-lg"
-      href={`https://${lang}.wikipedia.org/wiki/${article.article}`}
+      href={`https://${language}.wikipedia.org/wiki/${article.article}`}
       target="_blank"
       key={article.article}
     >
@@ -23,5 +23,3 @@ function ArticleCard({ article, lang }: ArticleCardProps) {
     </Link>
   )
 }
-
-export default ArticleCard

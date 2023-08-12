@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Wiki Top',
-  description: 'Wiki Top Articles',
+  description: 'Check wiki top articles',
 }
 
 export default function RootLayout({

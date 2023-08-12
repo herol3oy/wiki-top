@@ -1,16 +1,25 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
+import { Article } from '@/types/article'
 import { Language } from '@/types/language'
-import { formatDate, getYesterdayDate } from '@/utils/format-dates'
+import { getYesterdayDate } from '@/utils/get-yesterday-date'
+import requestArticles from '@/utils/request-articles'
 
-function SelectForm() {
-  const [language, languageSet] = useState('')
+interface SelectFormProps {
+  language: string
+  languageSet: Dispatch<SetStateAction<string>>
+  articlesSet: Dispatch<SetStateAction<Article[]>>
+}
+
+export default function SelectForm({
+  language,
+  languageSet,
+  articlesSet,
+}: SelectFormProps) {
   const [selectedDate, selectedDateSet] = useState('')
   const [disabledSearch, disabledSearchSet] = useState(false)
-  const router = useRouter()
 
   useEffect(() => {
     if (!language.length || !selectedDate.length) {
@@ -20,17 +29,15 @@ function SelectForm() {
     }
   }, [language, selectedDate])
 
-  const getUrl = (lang: string) => {
-    const { selectedDay, selectedMonth, selectedYear } =
-      formatDate(selectedDate)
-    return `/wikiTopArticles?lang=${lang}&day=${selectedDay}&month=${selectedMonth}&year=${selectedYear}`
-  }
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (language.length) {
-      router.push(getUrl(language))
-    }
+
+    const articles = await requestArticles({
+      language,
+      selectedDate,
+    })
+
+    articlesSet(articles)
   }
 
   return (
@@ -65,11 +72,7 @@ function SelectForm() {
       </div>
 
       <button
-        className={`h-fit max-h-fit w-64 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm transition ${
-          disabledSearch
-            ? 'cursor-not-allowed bg-gray-500'
-            : 'bg-slate-900 hover:bg-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600'
-        }`}
+        className="h-fit max-h-fit w-64 rounded-md bg-slate-900 px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600 disabled:cursor-not-allowed disabled:bg-gray-500"
         type="submit"
         disabled={disabledSearch}
       >
@@ -78,4 +81,3 @@ function SelectForm() {
     </form>
   )
 }
-export default SelectForm
