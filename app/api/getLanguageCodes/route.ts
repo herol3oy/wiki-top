@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 
 const cheerio = require('cheerio')
-import axios from 'axios'
 
 const BASE_URL = 'https://en.wikipedia.org/wiki/ISO_639-1_codes'
 
@@ -15,8 +14,9 @@ export async function GET() {
   const languageCodes: LanguageCode[] = []
 
   try {
-    const response = await axios.get(BASE_URL)
-    const $ = cheerio.load(response.data)
+    const response = await fetch(BASE_URL)
+    const HTMLContent = await response.text()
+    const $ = cheerio.load(HTMLContent)
 
     $('tbody tr').each((_: number, element: HTMLElement) => {
       const td = $(element).find('td:first-child')
