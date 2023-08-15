@@ -1,13 +1,10 @@
-import Link from 'next/link'
+import { DisplayMessage, DisplayMessageType } from '@/components/DisplayMessage'
 
 export default function NotFound() {
   return (
-    <div className="primary-light-color">
-      <h2>Not Found ❌</h2>
-      <p>Could not find requested resource</p>
-      <Link className="hover:underline" href="/">
-        Return Home
-      </Link>
-    </div>
+    <DisplayMessage
+      message="Page not found! Please go back to the home page."
+      type={DisplayMessageType.DANGER}
+    />
   )
 }

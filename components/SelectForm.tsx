@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { LanguageCode } from '@/app/api/getLanguageCodes/route'
-import { Article } from '@/types/article'
 import { formatDate } from '@/utils/format-dates'
 import { getLanguageCodes } from '@/utils/get-language-codes'
 import { getYesterdayDate } from '@/utils/get-yesterday-date'
@@ -25,10 +24,19 @@ export default function SelectForm() {
       const languageCodes = await getLanguageCodes()
       languageCodeSet(languageCodes)
 
+      const languageCodesJSON = JSON.stringify(languageCodes)
+      localStorage.setItem('languageCodes', languageCodesJSON)
+
       setLoading(false)
     }
 
-    innerEffect()
+    const languageCodesJSON = localStorage.getItem('languageCodes')
+    if (languageCodesJSON) {
+      const parsedLanguageCodes: LanguageCode[] = JSON.parse(languageCodesJSON)
+      languageCodeSet(parsedLanguageCodes)
+    } else {
+      innerEffect()
+    }
   }, [])
 
   useEffect(() => {
@@ -47,7 +55,7 @@ export default function SelectForm() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (language.length) {
+    if (language.length && selectedDate.length) {
       router.push(getUrl(language))
     }
   }

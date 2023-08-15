@@ -21,19 +21,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`container mx-auto ${inter.className}`}>
-        <nav className="my-10 flex items-center justify-between text-center">
-          <section className="flex gap-2">
-            <small>🔥 Rank</small>
-            <small>👁️ Views</small>
-          </section>
-          <Link href="/">Wiki Top</Link>
+        <nav className="mx-auto my-10 flex w-fit items-center justify-center gap-10 rounded-full bg-white/70 px-3 text-center align-middle text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur">
           <Link
-            className="flex w-fit cursor-pointer gap-3 rounded-md border border-black bg-black fill-white p-2 text-white transition-all duration-300 hover:bg-white hover:fill-black hover:text-black"
+            className="font-extrabold transition hover:text-gray-400"
+            href="/"
+          >
+            Wiki Tops
+          </Link>
+          <Link
+            className="z-50 cursor-pointer fill-black p-2 transition hover:-translate-y-1"
             href="https://github.com/herol3oy/wiki-top"
             target="_blank"
           >
             <GithubIcon />
-            <h6>Github</h6>
           </Link>
         </nav>
         {children}

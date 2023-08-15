@@ -1,5 +1,17 @@
+import { Fragment } from 'react'
+
+import { DisplayMessage, DisplayMessageType } from '@/components/DisplayMessage'
 import SelectForm from '@/components/SelectForm'
 
 export default function Home() {
-  return <SelectForm />
+  return (
+    <Fragment>
+      <SelectForm />
+      <DisplayMessage
+        message="Select a language and date then press the search button to see the
+        Wiki Top Articles of that specific date."
+        type={DisplayMessageType.INFO}
+      />
+    </Fragment>
+  )
 }

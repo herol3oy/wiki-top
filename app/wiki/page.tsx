@@ -3,6 +3,7 @@ import { Fragment } from 'react'
 
 import ArticleCard from '@/components/ArticleCard'
 import ArticleContainer from '@/components/ArticleContainer'
+import { DisplayMessage, DisplayMessageType } from '@/components/DisplayMessage'
 import SelectForm from '@/components/SelectForm'
 import { Article } from '@/types/article'
 import requestArticles from '@/utils/request-articles'
@@ -26,15 +27,20 @@ async function WikiPage({ searchParams }: LanguagePageProps) {
     <Fragment>
       <SelectForm />
       <ArticleContainer>
-        {articles.length
-          ? articles.map((article: Article) => (
-              <ArticleCard
-                key={article.article}
-                article={article}
-                language={selectedLanguageCode}
-              />
-            ))
-          : 'No article found!'}
+        {articles.length ? (
+          articles.map((article: Article) => (
+            <ArticleCard
+              key={article.article}
+              article={article}
+              language={selectedLanguageCode}
+            />
+          ))
+        ) : (
+          <DisplayMessage
+            message="No article found!"
+            type={DisplayMessageType.DANGER}
+          />
+        )}
       </ArticleContainer>
     </Fragment>
   )
