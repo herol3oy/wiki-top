@@ -1,33 +1,31 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { LanguageCode } from '@/app/api/getLanguageCodes/route'
 import { Article } from '@/types/article'
 import { formatDate } from '@/utils/format-dates'
 import { getLanguageCodes } from '@/utils/get-language-codes'
 import { getYesterdayDate } from '@/utils/get-yesterday-date'
-import requestArticles from '@/utils/request-articles'
-
-// interface SelectFormProps {
-//   language: string
-//   languageSet: Dispatch<SetStateAction<string>>
-//   articlesSet: Dispatch<SetStateAction<Article[]>>
-// }
 
 export default function SelectForm() {
   const [language, languageSet] = useState('')
   const [selectedDate, selectedDateSet] = useState('')
   const [disabledSearch, disabledSearchSet] = useState(false)
   const [languageCode, languageCodeSet] = useState<LanguageCode[]>([])
+  const [loading, setLoading] = useState(false)
 
   const router = useRouter()
 
   useEffect(() => {
     async function innerEffect() {
+      setLoading(true)
+
       const languageCodes = await getLanguageCodes()
       languageCodeSet(languageCodes)
+
+      setLoading(false)
     }
 
     innerEffect()
@@ -68,8 +66,12 @@ export default function SelectForm() {
             onChange={(e) => languageSet(e.target.value)}
             name="language"
             id="language"
+            disabled={loading}
+            className={loading ? 'cursor-not-allowed' : ''}
           >
-            <option value="">Language</option>
+            <option value="">
+              {loading ? 'Getting language codes...' : 'Language'}
+            </option>
             {languageCode.length &&
               languageCode.map((lang) => (
                 <option key={lang.id} value={lang.code}>

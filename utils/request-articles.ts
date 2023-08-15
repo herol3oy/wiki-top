@@ -4,17 +4,17 @@ import { Data } from '@/types/data'
 import createUrl from './create-url'
 
 interface RequestArticlesProps {
-  language: string
+  selectedLanguageCode: string
   selectedDate: string
 }
 
 export default async function requestArticles({
-  language,
+  selectedLanguageCode,
   selectedDate,
 }: RequestArticlesProps) {
   const url = createUrl({
-    language,
     selectedDate,
+    selectedLanguageCode,
   })
 
   try {
