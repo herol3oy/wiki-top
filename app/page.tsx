@@ -9,7 +9,7 @@ export default function Home() {
       <SelectForm />
       <DisplayMessage
         message="Select a language and date then press the search button to see the
-        Wiki Top Articles of that specific date."
+        Wiki Top Articles of that language and date."
         type={DisplayMessageType.INFO}
       />
     </Fragment>

@@ -66,7 +66,7 @@ export default function SelectForm() {
       onSubmit={handleSubmit}
       method="GET"
     >
-      <div className="flex-col justify-center gap-10 md:flex md:flex-row">
+      <div className="flex flex-col justify-center gap-5 md:flex md:flex-row">
         <label className="flex w-72 flex-col gap-2" htmlFor="language">
           <span className="text-gray-700">Select a language</span>
           <select

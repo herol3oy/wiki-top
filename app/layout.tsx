@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`container mx-auto ${inter.className}`}>
+      <body className={`container mx-auto px-5 ${inter.className}`}>
         <nav className="mx-auto my-10 flex w-fit items-center justify-center gap-10 rounded-full bg-white/70 px-3 text-center align-middle text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur">
           <Link
             className="font-extrabold transition hover:text-gray-400"
