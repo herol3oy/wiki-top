@@ -1,3 +1,5 @@
+import SpinningLogo from '@/components/SpinningLogo'
+
 export default function Loading() {
-  return <p>Loading..</p>
+  return <SpinningLogo />
 }

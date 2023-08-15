@@ -1,27 +1,28 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 import { LanguageCode } from '@/app/api/getLanguageCodes/route'
 import { Article } from '@/types/article'
+import { formatDate } from '@/utils/format-dates'
 import { getLanguageCodes } from '@/utils/get-language-codes'
 import { getYesterdayDate } from '@/utils/get-yesterday-date'
 import requestArticles from '@/utils/request-articles'
 
-interface SelectFormProps {
-  language: string
-  languageSet: Dispatch<SetStateAction<string>>
-  articlesSet: Dispatch<SetStateAction<Article[]>>
-}
+// interface SelectFormProps {
+//   language: string
+//   languageSet: Dispatch<SetStateAction<string>>
+//   articlesSet: Dispatch<SetStateAction<Article[]>>
+// }
 
-export default function SelectForm({
-  language,
-  languageSet,
-  articlesSet,
-}: SelectFormProps) {
+export default function SelectForm() {
+  const [language, languageSet] = useState('')
   const [selectedDate, selectedDateSet] = useState('')
   const [disabledSearch, disabledSearchSet] = useState(false)
   const [languageCode, languageCodeSet] = useState<LanguageCode[]>([])
+
+  const router = useRouter()
 
   useEffect(() => {
     async function innerEffect() {
@@ -40,15 +41,17 @@ export default function SelectForm({
     }
   }, [language, selectedDate])
 
+  const getUrl = (language: string) => {
+    const { day, month, year } = formatDate(selectedDate)
+
+    return `/wiki?language=${language}&date=${month}-${day}-${year}`
+  }
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-
-    const articles = await requestArticles({
-      language,
-      selectedDate,
-    })
-
-    articlesSet(articles)
+    if (language.length) {
+      router.push(getUrl(language))
+    }
   }
 
   return (

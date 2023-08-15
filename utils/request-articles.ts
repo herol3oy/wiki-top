@@ -16,9 +16,32 @@ export default async function requestArticles({
     language,
     selectedDate,
   })
-  const data = await fetch(url)
-  const result: Data = await data.json()
-  const articles: Article[] = result.items[0].articles
 
-  return articles
+  try {
+    const response = await fetch(url)
+
+    if (!response.ok) {
+      return {
+        data: null,
+        error: {
+          message: `API error: ${response.statusText}`,
+        },
+      }
+    }
+
+    const data: Data = await response.json()
+    const articles: Article[] = data.items[0].articles
+
+    return {
+      data: articles,
+      error: null,
+    }
+  } catch (error) {
+    return {
+      data: null,
+      error: {
+        message: `API error: ${JSON.stringify(error) || error}`,
+      },
+    }
+  }
 }
