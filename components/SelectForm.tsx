@@ -2,8 +2,9 @@
 
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
+import { LanguageCode } from '@/app/api/getLanguageCodes/route'
 import { Article } from '@/types/article'
-import { Language } from '@/types/language'
+import { getLanguageCodes } from '@/utils/get-language-codes'
 import { getYesterdayDate } from '@/utils/get-yesterday-date'
 import requestArticles from '@/utils/request-articles'
 
@@ -20,6 +21,16 @@ export default function SelectForm({
 }: SelectFormProps) {
   const [selectedDate, selectedDateSet] = useState('')
   const [disabledSearch, disabledSearchSet] = useState(false)
+  const [languageCode, languageCodeSet] = useState<LanguageCode[]>([])
+
+  useEffect(() => {
+    async function innerEffect() {
+      const languageCodes = await getLanguageCodes()
+      languageCodeSet(languageCodes)
+    }
+
+    innerEffect()
+  }, [])
 
   useEffect(() => {
     if (!language.length || !selectedDate.length) {
@@ -41,27 +52,32 @@ export default function SelectForm({
   }
 
   return (
-    <form className="flex flex-col gap-10" onSubmit={handleSubmit} method="GET">
-      <div className="">
+    <form
+      className="my-10 flex w-full flex-col items-center justify-center gap-10"
+      onSubmit={handleSubmit}
+      method="GET"
+    >
+      <div className="flex-col justify-center gap-10 md:flex md:flex-row">
         <label className="flex w-72 flex-col gap-2" htmlFor="language">
-          <span className="text-gray-700">Language</span>
+          <span className="text-gray-700">Select a language</span>
           <select
             value={language}
             onChange={(e) => languageSet(e.target.value)}
             name="language"
             id="language"
           >
-            <option value="">Select a language</option>
-            {Object.values(Language).map((lang) => (
-              <option key={lang} value={lang}>
-                {lang}
-              </option>
-            ))}
+            <option value="">Language</option>
+            {languageCode.length &&
+              languageCode.map((lang) => (
+                <option key={lang.id} value={lang.code}>
+                  {lang.language}
+                </option>
+              ))}
           </select>
         </label>
 
         <label className="flex w-72 flex-col gap-2" htmlFor="date">
-          <span className="text-gray-700">Select date</span>
+          <span className="text-gray-700">Select a date</span>
           <input
             type="date"
             value={selectedDate}

@@ -19,13 +19,19 @@ export default function Home() {
         articlesSet={articlesSet}
       />
       <ArticlesContainer>
-        {articles.map((article: Article) => (
-          <ArticleCard
-            key={article.article}
-            article={article}
-            language={language}
-          />
-        ))}
+        {articles.length ? (
+          articles.map((article: Article) => (
+            <ArticleCard
+              key={article.article}
+              article={article}
+              language={language}
+            />
+          ))
+        ) : (
+          <p className="col-span-4 w-full text-center">
+            Select a language and a date. Then click the search button.
+          </p>
+        )}
       </ArticlesContainer>
     </>
   )
