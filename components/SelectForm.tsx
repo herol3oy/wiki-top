@@ -4,18 +4,40 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { LanguageCode } from '@/app/api/getLanguageCodes/route'
+import { formatDateWithMonthInWords } from '@/utils/format-date-with-month-in-words'
 import { formatDate } from '@/utils/format-dates'
 import { getLanguageCodes } from '@/utils/get-language-codes'
 import { getYesterdayDate } from '@/utils/get-yesterday-date'
 
+export enum ResourceType {
+  ALL_ACCESS = 'all-access',
+  MOBILE_APP = 'mobile-app',
+}
+
 export default function SelectForm() {
   const [language, languageSet] = useState('')
+  const [resourceType, resourceTypeSet] = useState('')
+  const [wikisource, wikisourceSet] = useState(false)
   const [selectedDate, selectedDateSet] = useState('')
   const [disabledSearch, disabledSearchSet] = useState(false)
   const [languageCode, languageCodeSet] = useState<LanguageCode[]>([])
   const [loading, setLoading] = useState(false)
 
   const router = useRouter()
+
+  useEffect(() => selectedDateSet(''), [wikisource])
+
+  useEffect(() => {
+    if (
+      !language.length ||
+      !selectedDate.length ||
+      (!wikisource && !resourceType.length)
+    ) {
+      disabledSearchSet(true)
+    } else {
+      disabledSearchSet(false)
+    }
+  }, [language, selectedDate, wikisource, resourceType])
 
   useEffect(() => {
     async function innerEffect() {
@@ -39,18 +61,14 @@ export default function SelectForm() {
     }
   }, [])
 
-  useEffect(() => {
-    if (!language.length || !selectedDate.length) {
-      disabledSearchSet(true)
-    } else {
-      disabledSearchSet(false)
-    }
-  }, [language, selectedDate])
-
   const getUrl = (language: string) => {
     const { day, month, year } = formatDate(selectedDate)
 
-    return `/wiki?language=${language}&date=${month}-${day}-${year}`
+    if (wikisource) {
+      return `/wiki?language=${language}&wikisource=${wikisource}&date=${month}-${day}-${year}`
+    } else {
+      return `/wiki?language=${language}&resourceType=${resourceType}&date=${month}-${day}-${year}`
+    }
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -66,7 +84,41 @@ export default function SelectForm() {
       onSubmit={handleSubmit}
       method="GET"
     >
+      <pre>
+        {JSON.stringify(
+          { resourceType, language, selectedDate, wikisource },
+          null,
+          2,
+        )}
+      </pre>
+      {!wikisource
+        ? resourceType === ResourceType.ALL_ACCESS
+          ? `Get the top 1000 most visited articles from ${language}.wikipedia for ${formatDateWithMonthInWords(
+              selectedDate,
+            )}`
+          : `Get the top 1000 articles from ${language}.wikipedia visited via the mobile app on ${formatDateWithMonthInWords(
+              selectedDate,
+            )}`
+        : `Get the top 1000 most visited articles from ${language}.wikisource for all days in ${formatDateWithMonthInWords(
+            selectedDate,
+          )}`}
+
       <div className="flex flex-col justify-center gap-5 md:flex md:flex-row">
+        <label className="flex w-72 flex-col gap-2" htmlFor="resourceType">
+          <span className="text-gray-700">Select resource type</span>
+          <select
+            value={resourceType}
+            onChange={(e) => resourceTypeSet(e.target.value)}
+            name="resourceType"
+            id="resourceType"
+            disabled={wikisource}
+          >
+            <option value="">Resource type</option>
+            <option value="all-access">all-access</option>
+            <option value="mobile-app">mobile-app</option>
+          </select>
+        </label>
+
         <label className="flex w-72 flex-col gap-2" htmlFor="language">
           <span className="text-gray-700">Select a language</span>
           <select
@@ -92,11 +144,24 @@ export default function SelectForm() {
         <label className="flex w-72 flex-col gap-2" htmlFor="date">
           <span className="text-gray-700">Select a date</span>
           <input
-            type="date"
+            type={wikisource ? 'month' : 'date'}
             value={selectedDate}
-            max={getYesterdayDate()}
+            max={getYesterdayDate(wikisource)}
             onChange={(e) => selectedDateSet(e.target.value)}
           />
+        </label>
+
+        <label className="flex w-72 gap-2" htmlFor="wikisource">
+          <input
+            className="disabled:cursor-not-allowed"
+            type="checkbox"
+            checked={wikisource}
+            onChange={() => wikisourceSet(!wikisource)}
+            name="wikisource"
+            id="wikisource"
+            disabled={!!resourceType.length}
+          />
+          <span className="text-gray-700">Wikisource</span>
         </label>
       </div>
 
