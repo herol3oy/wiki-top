@@ -1,4 +1,4 @@
-import { ResourceType } from '@/components/SelectForm'
+import { ResourceType } from '@/components/HeroText'
 import { Article } from '@/types/article'
 import { Data } from '@/types/data'
 

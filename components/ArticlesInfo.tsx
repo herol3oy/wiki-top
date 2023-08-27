@@ -1,7 +1,7 @@
 import { Article } from '@/types/article'
 import { formatDateWithMonthInWords } from '@/utils/format-date-with-month-in-words'
 
-import { ResourceType } from './SelectForm'
+import { ResourceType } from './HeroText'
 
 interface ArticlesInfo {
   articles: Article[] | null

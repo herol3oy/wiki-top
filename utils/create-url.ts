@@ -1,4 +1,4 @@
-import { ResourceType } from '@/components/SelectForm'
+import { ResourceType } from '@/components/HeroText'
 import { formatDate } from '@/utils/format-dates'
 
 interface BaseUrlProps {
