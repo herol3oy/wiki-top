@@ -3,8 +3,6 @@
 import Link from 'next/link'
 import { Fragment, useEffect, useState } from 'react'
 
-import ArticleCard from '@/components/ArticleCard'
-import ArticleContainer from '@/components/ArticleContainer'
 import ArticlesInfo from '@/components/ArticlesInfo'
 import { DisplayMessage, DisplayMessageType } from '@/components/DisplayMessage'
 import { ResourceType } from '@/components/HeroText'
