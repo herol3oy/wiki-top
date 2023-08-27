@@ -1,17 +1,19 @@
 'use client'
 
+import Link from 'next/link'
 import { Fragment, useEffect, useState } from 'react'
 
 import ArticleCard from '@/components/ArticleCard'
 import ArticleContainer from '@/components/ArticleContainer'
 import ArticlesInfo from '@/components/ArticlesInfo'
 import { DisplayMessage, DisplayMessageType } from '@/components/DisplayMessage'
+import { ResourceType } from '@/components/HeroText'
 import Pagination from '@/components/Pagination'
-import SelectForm, { ResourceType } from '@/components/SelectForm'
+import SelectForm from '@/components/SelectForm'
 import { Article } from '@/types/article'
 import requestArticles from '@/utils/request-articles'
 
-const ITEMS_PER_PAGE = 60
+const ITEMS_PER_PAGE = 50
 
 interface LanguagePageProps {
   searchParams: {
@@ -72,24 +74,37 @@ function WikiPage({ searchParams }: LanguagePageProps) {
         selectedLanguageCode={selectedLanguageCode}
         resourceType={resourceType || ResourceType.ALL_ACCESS}
       />
-      <ArticleContainer>
-        {articles?.length ? (
-          articles
-            .slice(startPageIndex, endPageIndex)
-            .map((article: Article) => (
-              <ArticleCard
-                key={article.article}
-                article={article}
-                language={selectedLanguageCode}
-              />
-            ))
-        ) : (
-          <DisplayMessage
-            message="No article found!"
-            type={DisplayMessageType.DANGER}
-          />
-        )}
-      </ArticleContainer>
+      <div className="table w-full rounded-xl">
+        <div className="table-header-group">
+          <div className="table-row bg-slate-900 text-white">
+            <div className="table-cell p-2">Rank</div>
+            <div className="table-cell p-2">Views</div>
+            <div className="table-cell p-2">Title</div>
+          </div>
+        </div>
+        <div className="table-row-group">
+          {articles?.length ? (
+            articles
+              .slice(startPageIndex, endPageIndex)
+              .map((article: Article) => (
+                <Link
+                  className="table-row divide-y divide-dashed p-10 transition hover:bg-slate-900 hover:text-white"
+                  key={article.views}
+                  href={`https://${selectedLanguageCode}.wikipedia.org/wiki/${article.article}`}
+                >
+                  <span className="table-cell p-3">{article.rank}</span>
+                  <span className="table-cell p-3">{article.views}</span>
+                  <span className="table-cell p-3">{article.article}</span>
+                </Link>
+              ))
+          ) : (
+            <DisplayMessage
+              message="No article found!"
+              type={DisplayMessageType.DANGER}
+            />
+          )}
+        </div>
+      </div>
       <Pagination
         articles={articles}
         currentPage={currentPage}

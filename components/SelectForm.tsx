@@ -4,15 +4,10 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { LanguageCode } from '@/app/api/getLanguageCodes/route'
-import { formatDateWithMonthInWords } from '@/utils/format-date-with-month-in-words'
+import HeroText from '@/components/HeroText'
 import { formatDate } from '@/utils/format-dates'
 import { getLanguageCodes } from '@/utils/get-language-codes'
 import { getYesterdayDate } from '@/utils/get-yesterday-date'
-
-export enum ResourceType {
-  ALL_ACCESS = 'all-access',
-  MOBILE_APP = 'mobile-app',
-}
 
 export default function SelectForm() {
   const [language, languageSet] = useState('')
@@ -84,27 +79,19 @@ export default function SelectForm() {
       onSubmit={handleSubmit}
       method="GET"
     >
-      <pre>
-        {JSON.stringify(
-          { resourceType, language, selectedDate, wikisource },
-          null,
-          2,
-        )}
-      </pre>
-      {!wikisource
-        ? resourceType === ResourceType.ALL_ACCESS
-          ? `Get the top 1000 most visited articles from ${language}.wikipedia for ${formatDateWithMonthInWords(
-              selectedDate,
-            )}`
-          : `Get the top 1000 articles from ${language}.wikipedia visited via the mobile app on ${formatDateWithMonthInWords(
-              selectedDate,
-            )}`
-        : `Get the top 1000 most visited articles from ${language}.wikisource for all days in ${formatDateWithMonthInWords(
-            selectedDate,
-          )}`}
-
-      <div className="flex flex-col justify-center gap-5 md:flex md:flex-row">
-        <label className="flex w-72 flex-col gap-2" htmlFor="resourceType">
+      <HeroText
+        resourceType={resourceType}
+        wikisource={wikisource}
+        language={language}
+        selectedDate={selectedDate}
+      />
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <label
+          className={`flex w-72 flex-col gap-2 ${
+            wikisource ? 'cursor-not-allowed' : ''
+          }`}
+          htmlFor="resourceType"
+        >
           <span className="text-gray-700">Select resource type</span>
           <select
             value={resourceType}
@@ -113,10 +100,16 @@ export default function SelectForm() {
             id="resourceType"
             disabled={wikisource}
           >
-            <option value="">Resource type</option>
-            <option value="all-access">all-access</option>
-            <option value="mobile-app">mobile-app</option>
+            <option value="">Resource type:</option>
+            <option value="all-access">All Device</option>
+            <option value="mobile-app">Mobile App</option>
           </select>
+          {wikisource && (
+            <small className="text-red-500">
+              {' '}
+              ❌ Disabled: Wiki Source is selected.
+            </small>
+          )}
         </label>
 
         <label className="flex w-72 flex-col gap-2" htmlFor="language">
@@ -130,7 +123,7 @@ export default function SelectForm() {
             className={loading ? 'cursor-not-allowed' : ''}
           >
             <option value="">
-              {loading ? 'Getting language codes...' : 'Language'}
+              {loading ? 'Getting language codes...' : 'Language:'}
             </option>
             {languageCode.length &&
               languageCode.map((lang) => (
@@ -162,6 +155,11 @@ export default function SelectForm() {
             disabled={!!resourceType.length}
           />
           <span className="text-gray-700">Wikisource</span>
+          {!!resourceType.length && (
+            <small className="text-red-500">
+              ❌ Disabled: Resource Type is selected.{' '}
+            </small>
+          )}
         </label>
       </div>
 
