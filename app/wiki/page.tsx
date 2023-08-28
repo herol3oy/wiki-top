@@ -96,10 +96,12 @@ function WikiPage({ searchParams }: LanguagePageProps) {
                 </Link>
               ))
           ) : (
-            <DisplayMessage
-              message="No article found!"
-              type={DisplayMessageType.DANGER}
-            />
+            <div className="table-row w-full">
+              <DisplayMessage
+                message="No article found!"
+                type={DisplayMessageType.DANGER}
+              />
+            </div>
           )}
         </div>
       </div>

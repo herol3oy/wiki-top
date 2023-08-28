@@ -19,11 +19,15 @@ export function HeroText({
   selectedDate,
 }: HeroTextProps) {
   return (
-    <h1 className="w-full text-center text-xl font-extrabold leading-loose md:w-7/12 md:text-5xl">
+    <h1 className="w-full text-center text-xl font-extrabold text-zinc-600 md:w-7/12 md:text-5xl">
       {!wikisource ? (
         resourceType === ResourceType.ALL_ACCESS ? (
           <>
-            Get the top 1000 articles from{' '}
+            Get the{' '}
+            <span className="animate-gradient-xy bg-gradient-to-r from-blue-400 via-purple-500 to-red-500 bg-clip-text font-extrabold text-transparent">
+              top 1000
+            </span>{' '}
+            articles from{' '}
             {language ? (
               <small className="w-10 rounded bg-pink-300 p-2 text-pink-900">
                 {language}
@@ -50,7 +54,11 @@ export function HeroText({
           </>
         ) : (
           <>
-            Get the top 1000 articles from{' '}
+            Get the{' '}
+            <span className="animate-gradient-xy bg-gradient-to-r from-blue-400 via-purple-500 to-red-500 bg-clip-text font-extrabold text-transparent">
+              top 1000
+            </span>{' '}
+            articles from{' '}
             {language ? (
               <small className="w-10 rounded bg-pink-300 p-2 text-pink-900">
                 {language}
@@ -78,7 +86,11 @@ export function HeroText({
         )
       ) : (
         <>
-          Get the top 1000 most visited articles from{' '}
+          Get the{' '}
+          <span className="animate-gradient-xy bg-gradient-to-r from-blue-400 via-purple-500 to-red-500 bg-clip-text font-extrabold text-transparent">
+            top 1000
+          </span>{' '}
+          most visited articles from{' '}
           {language ? (
             <small className="w-10 rounded bg-pink-300 p-2 text-pink-900">
               {language}
@@ -91,7 +103,7 @@ export function HeroText({
           .wikisource for all days in{' '}
           {selectedDate ? (
             <small className="w-full rounded bg-pink-300 p-2 text-pink-900">
-              {formatDateWithMonthInWords(selectedDate)}
+              {formatDateWithMonthInWords(selectedDate).split(' ')[0]}
             </small>
           ) : (
             <small className="animate-puls shadow-mde rounded bg-pink-300 p-2 text-white">

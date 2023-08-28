@@ -86,6 +86,28 @@ export default function SelectForm() {
         selectedDate={selectedDate}
       />
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <label className="flex w-72 flex-col gap-2" htmlFor="language">
+          <span className="text-gray-700">Select a language</span>
+          <select
+            value={language}
+            onChange={(e) => languageSet(e.target.value)}
+            name="language"
+            id="language"
+            disabled={loading}
+            className={loading ? 'cursor-not-allowed' : ''}
+          >
+            <option value="">
+              {loading ? 'Getting language codes...' : 'Language:'}
+            </option>
+            {languageCode.length &&
+              languageCode.map((lang) => (
+                <option key={lang.id} value={lang.code}>
+                  {lang.language}
+                </option>
+              ))}
+          </select>
+        </label>
+
         <label
           className={`flex w-72 flex-col gap-2 ${
             wikisource ? 'cursor-not-allowed' : ''
@@ -110,28 +132,6 @@ export default function SelectForm() {
               ❌ Disabled: Wiki Source is selected.
             </small>
           )}
-        </label>
-
-        <label className="flex w-72 flex-col gap-2" htmlFor="language">
-          <span className="text-gray-700">Select a language</span>
-          <select
-            value={language}
-            onChange={(e) => languageSet(e.target.value)}
-            name="language"
-            id="language"
-            disabled={loading}
-            className={loading ? 'cursor-not-allowed' : ''}
-          >
-            <option value="">
-              {loading ? 'Getting language codes...' : 'Language:'}
-            </option>
-            {languageCode.length &&
-              languageCode.map((lang) => (
-                <option key={lang.id} value={lang.code}>
-                  {lang.language}
-                </option>
-              ))}
-          </select>
         </label>
 
         <label className="flex w-72 flex-col gap-2" htmlFor="date">
