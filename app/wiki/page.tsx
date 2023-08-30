@@ -78,10 +78,10 @@ function WikiPage({ searchParams }: LanguagePageProps) {
       <div className="mx-auto table w-full rounded-xl md:w-2/3">
         <div className="table-header-group">
           <div className="table-row bg-slate-900 text-white">
-            <div className="table-cell p-2">Rank</div>
-            <div className="table-cell p-2">Views</div>
-            <div className="table-cell p-2">Title</div>
-            <div className="table-cell p-2">Discover</div>
+            <div className="table-cell py-1">Rank</div>
+            <div className="table-cell py-1">Views</div>
+            <div className="table-cell py-1">Title</div>
+            <div className="table-cell py-1">Discover</div>
           </div>
         </div>
         <div className="table-row-group">
@@ -90,31 +90,32 @@ function WikiPage({ searchParams }: LanguagePageProps) {
               .slice(startPageIndex, endPageIndex)
               .map((article: Article) => (
                 <div
-                  className="table-row divide-y divide-dashed p-10 transition hover:bg-slate-900 hover:text-white"
+                  className="table-row divide-y divide-dashed divide-sky-500 p-10 transition hover:bg-slate-200 hover:text-slate-950"
                   key={article.article}
                 >
-                  <span className="table-cell p-3">{article.rank}</span>
-                  <span className="table-cell p-3">{article.views}</span>
-                  <span className="table-cell p-3">
+                  <span className="table-cell py-1">{article.rank}</span>
+                  <span className="table-cell py-1">{article.views}</span>
+                  <span className="table-cell py-1">
                     <span> {article.article}</span>
                   </span>
-                  <span className="flex gap-3">
-                    <Link
-                      className="cursor-pointer transition hover:-translate-y-1"
-                      href={`https://${selectedLanguageCode}.wikipedia.org/wiki/${article.article}`}
-                      target="_blank"
-                    >
-                      <WikiPediaIcon />
-                    </Link>
-
-                    <Link
-                      className="cursor-pointer transition hover:-translate-y-1"
-                      href={`https://duckduckgo.com/?q=${article.article}`}
-                      target="_blank"
-                    >
-                      <DuckDuckGoIcon />
-                    </Link>
-                  </span>
+                  <div className="table-cell py-1">
+                    <span className="flex gap-3">
+                      <Link
+                        className="cursor-pointer transition hover:-translate-y-1"
+                        href={`https://${selectedLanguageCode}.wikipedia.org/wiki/${article.article}`}
+                        target="_blank"
+                      >
+                        <WikiPediaIcon />
+                      </Link>
+                      <Link
+                        className="cursor-pointer transition hover:-translate-y-1"
+                        href={`https://duckduckgo.com/?q=${article.article}`}
+                        target="_blank"
+                      >
+                        <DuckDuckGoIcon />
+                      </Link>
+                    </span>
+                  </div>
                 </div>
               ))
           ) : (
