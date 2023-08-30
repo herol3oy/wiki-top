@@ -6,6 +6,8 @@ import { Fragment, useEffect, useState } from 'react'
 import ArticlesInfo from '@/components/ArticlesInfo'
 import { DisplayMessage, DisplayMessageType } from '@/components/DisplayMessage'
 import { ResourceType } from '@/components/HeroText'
+import DuckDuckGoIcon from '@/components/icons/DuckDuckGo'
+import WikiPediaIcon from '@/components/icons/Wikipedia'
 import Pagination from '@/components/Pagination'
 import SelectForm from '@/components/SelectForm'
 import { Article } from '@/types/article'
@@ -72,12 +74,14 @@ function WikiPage({ searchParams }: LanguagePageProps) {
         selectedLanguageCode={selectedLanguageCode}
         resourceType={resourceType || ResourceType.ALL_ACCESS}
       />
-      <div className="table w-full rounded-xl">
+
+      <div className="mx-auto table w-full rounded-xl md:w-2/3">
         <div className="table-header-group">
           <div className="table-row bg-slate-900 text-white">
             <div className="table-cell p-2">Rank</div>
             <div className="table-cell p-2">Views</div>
             <div className="table-cell p-2">Title</div>
+            <div className="table-cell p-2">Discover</div>
           </div>
         </div>
         <div className="table-row-group">
@@ -85,15 +89,33 @@ function WikiPage({ searchParams }: LanguagePageProps) {
             articles
               .slice(startPageIndex, endPageIndex)
               .map((article: Article) => (
-                <Link
+                <div
                   className="table-row divide-y divide-dashed p-10 transition hover:bg-slate-900 hover:text-white"
-                  key={article.views}
-                  href={`https://${selectedLanguageCode}.wikipedia.org/wiki/${article.article}`}
+                  key={article.article}
                 >
                   <span className="table-cell p-3">{article.rank}</span>
                   <span className="table-cell p-3">{article.views}</span>
-                  <span className="table-cell p-3">{article.article}</span>
-                </Link>
+                  <span className="table-cell p-3">
+                    <span> {article.article}</span>
+                  </span>
+                  <span className="flex gap-3">
+                    <Link
+                      className="cursor-pointer transition hover:-translate-y-1"
+                      href={`https://${selectedLanguageCode}.wikipedia.org/wiki/${article.article}`}
+                      target="_blank"
+                    >
+                      <WikiPediaIcon />
+                    </Link>
+
+                    <Link
+                      className="cursor-pointer transition hover:-translate-y-1"
+                      href={`https://duckduckgo.com/?q=${article.article}`}
+                      target="_blank"
+                    >
+                      <DuckDuckGoIcon />
+                    </Link>
+                  </span>
+                </div>
               ))
           ) : (
             <div className="table-row w-full">

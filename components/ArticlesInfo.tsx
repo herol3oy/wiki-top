@@ -19,7 +19,7 @@ export default function ArticlesInfo({
   resourceType,
 }: ArticlesInfo) {
   return (
-    <div className="my-4 flex items-start justify-between">
+    <div className="mx-auto my-4 flex w-full items-start justify-between md:w-2/3">
       <div className="flex gap-5">
         <small className="text-sm text-gray-600">
           Articles: {` `}
