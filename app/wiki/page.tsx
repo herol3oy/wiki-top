@@ -7,6 +7,7 @@ import ArticlesInfo from '@/components/ArticlesInfo'
 import { DisplayMessage, DisplayMessageType } from '@/components/DisplayMessage'
 import { ResourceType } from '@/components/HeroText'
 import DuckDuckGoIcon from '@/components/icons/DuckDuckGo'
+import GoogleIcon from '@/components/icons/Google'
 import WikiPediaIcon from '@/components/icons/Wikipedia'
 import Pagination from '@/components/Pagination'
 import SelectForm from '@/components/SelectForm'
@@ -14,6 +15,27 @@ import { Article } from '@/types/article'
 import requestArticles from '@/utils/request-articles'
 
 const ITEMS_PER_PAGE = 50
+
+const SEARCH_ENGINES_LINKS = [
+  {
+    label: 'Wikipedia',
+    href: (selectedLanguageCode: string, article: string) =>
+      `https://${selectedLanguageCode}.wikipedia.org/wiki/${article}`,
+    icon: <WikiPediaIcon />,
+  },
+  {
+    label: 'DuckDuckGo',
+    href: (_: string, article: string) =>
+      `https://duckduckgo.com/?q=${article}`,
+    icon: <DuckDuckGoIcon />,
+  },
+  {
+    label: 'Google',
+    href: (_: string, article: string) =>
+      `https://google.com/search?q=${article}`,
+    icon: <GoogleIcon />,
+  },
+]
 
 interface LanguagePageProps {
   searchParams: {
@@ -100,20 +122,19 @@ function WikiPage({ searchParams }: LanguagePageProps) {
                   </span>
                   <div className="table-cell py-1">
                     <span className="flex gap-3">
-                      <Link
-                        className="cursor-pointer transition hover:-translate-y-1"
-                        href={`https://${selectedLanguageCode}.wikipedia.org/wiki/${article.article}`}
-                        target="_blank"
-                      >
-                        <WikiPediaIcon />
-                      </Link>
-                      <Link
-                        className="cursor-pointer transition hover:-translate-y-1"
-                        href={`https://duckduckgo.com/?q=${article.article}`}
-                        target="_blank"
-                      >
-                        <DuckDuckGoIcon />
-                      </Link>
+                      {SEARCH_ENGINES_LINKS.map((link) => (
+                        <Link
+                          key={link.label}
+                          className="cursor-pointer transition hover:-translate-y-1"
+                          href={link.href(
+                            selectedLanguageCode,
+                            article.article,
+                          )}
+                          target="_blank"
+                        >
+                          {link.icon}
+                        </Link>
+                      ))}
                     </span>
                   </div>
                 </div>
