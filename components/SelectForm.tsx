@@ -4,12 +4,18 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { LanguageCode } from '@/app/api/getLanguageCodes/route'
-import HeroText from '@/components/HeroText'
+import HeroText, { ResourceType } from '@/components/HeroText'
 import { formatDate } from '@/utils/format-dates'
 import { getLanguageCodes } from '@/utils/get-language-codes'
 import { getYesterdayDate } from '@/utils/get-yesterday-date'
 
-export default function SelectForm() {
+export default function SelectForm({
+  selectedLanguageCode,
+  userResourceType,
+}: {
+  selectedLanguageCode: string
+  userResourceType: ResourceType | undefined
+}) {
   const [language, languageSet] = useState('')
   const [resourceType, resourceTypeSet] = useState('')
   const [wikisource, wikisourceSet] = useState(false)
@@ -89,7 +95,7 @@ export default function SelectForm() {
         <label className="flex w-72 flex-col gap-2" htmlFor="language">
           <span className="text-gray-700">Select a language</span>
           <select
-            value={language}
+            value={language ? language : selectedLanguageCode}
             onChange={(e) => languageSet(e.target.value)}
             name="language"
             id="language"
@@ -116,7 +122,7 @@ export default function SelectForm() {
         >
           <span className="text-gray-700">Select resource type</span>
           <select
-            value={resourceType}
+            value={resourceType ? resourceType : userResourceType}
             onChange={(e) => resourceTypeSet(e.target.value)}
             name="resourceType"
             id="resourceType"

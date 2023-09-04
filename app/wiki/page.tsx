@@ -88,7 +88,10 @@ function WikiPage({ searchParams }: LanguagePageProps) {
 
   return (
     <Fragment>
-      <SelectForm />
+      <SelectForm
+        selectedLanguageCode={selectedLanguageCode}
+        userResourceType={resourceType}
+      />
       <ArticlesInfo
         articles={articles}
         currentPage={currentPage}
