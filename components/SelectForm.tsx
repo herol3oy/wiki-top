@@ -13,8 +13,8 @@ export default function SelectForm({
   selectedLanguageCode,
   userResourceType,
 }: {
-  selectedLanguageCode: string
-  userResourceType: ResourceType | undefined
+  selectedLanguageCode?: string
+  userResourceType?: ResourceType | undefined
 }) {
   const [language, languageSet] = useState('')
   const [resourceType, resourceTypeSet] = useState('')
