@@ -6,6 +6,7 @@ import { Fragment, useEffect, useState } from 'react'
 import ArticlesInfo from '@/components/ArticlesInfo'
 import { DisplayMessage, DisplayMessageType } from '@/components/DisplayMessage'
 import { ResourceType } from '@/components/HeroText'
+import CloseIcon from '@/components/icons/CloseIcon'
 import DuckDuckGoIcon from '@/components/icons/DuckDuckGo'
 import GoogleIcon from '@/components/icons/Google'
 import WikiPediaIcon from '@/components/icons/Wikipedia'
@@ -49,6 +50,7 @@ interface LanguagePageProps {
 function WikiPage({ searchParams }: LanguagePageProps) {
   const [currentPage, currentPageSet] = useState(1)
   const [articles, articlesSet] = useState<Article[] | null>([])
+  const [userSearchQuery, userSearchQuerySet] = useState<string>('')
 
   const {
     language: selectedLanguageCode,
@@ -99,7 +101,18 @@ function WikiPage({ searchParams }: LanguagePageProps) {
         selectedLanguageCode={selectedLanguageCode}
         resourceType={resourceType || ResourceType.ALL_ACCESS}
       />
-
+      <div className="relative mx-auto w-full md:w-2/3">
+        <input
+          className="my-4 flex w-full"
+          value={userSearchQuery}
+          onChange={(e) => userSearchQuerySet(e.target.value)}
+          type="text"
+          placeholder="Search wiki articles"
+        />
+        {userSearchQuery && (
+          <CloseIcon clearSearchInput={() => userSearchQuerySet('')} />
+        )}
+      </div>
       <div className="mx-auto table w-full rounded-xl md:w-2/3">
         <div className="table-header-group">
           <div className="table-row bg-slate-900 text-white">
@@ -112,6 +125,9 @@ function WikiPage({ searchParams }: LanguagePageProps) {
         <div className="table-row-group">
           {articles?.length ? (
             articles
+              .filter(({ article }) =>
+                article.toLowerCase().includes(userSearchQuery.toLowerCase()),
+              )
               .slice(startPageIndex, endPageIndex)
               .map((article: Article) => (
                 <div
